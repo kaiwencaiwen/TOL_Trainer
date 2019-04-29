@@ -1,0 +1,4 @@
+# Specify filepatterns you want git to ignore.
+
+flaskblog/static/question_files
+flaskblog/static/solution_files
