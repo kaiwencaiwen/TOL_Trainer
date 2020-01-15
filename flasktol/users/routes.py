@@ -8,6 +8,8 @@ from flask import Blueprint
 users = Blueprint('users', __name__)
 
 # register page
+
+
 @users.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -24,6 +26,8 @@ def register():
     return render_template("register.html", title="Register 註冊", form=form)
 
 # login page
+
+
 @users.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -43,6 +47,8 @@ def login():
     return render_template("login.html", title="Login 登入", form=form)
 
 # logout route
+
+
 @users.route("/logout")
 def logout():
     flash('You have been logged out 您已登出', 'info')
@@ -50,6 +56,8 @@ def logout():
     return redirect(url_for('main.home'))
 
 # account information (non-admin can only view their own)
+
+
 @users.route("/account/<string:username>", methods=['GET', 'POST'])
 @login_required
 def account(username):
@@ -59,19 +67,19 @@ def account(username):
     # statistics
     answerlist = Answer.query.filter_by(user_id=user.id).all()
     q_set = set()
-    attempted_count=0
-    highest_grade={}
+    attempted_count = 0
+    highest_grade = {}
     for answer in answerlist:
         if answer.question_id not in q_set:
             q_set.add(answer.question_id)
-            attempted_count+=1
+            attempted_count += 1
         try:
-            if answer.grade>highest_grade[answer.id]:
-                highest_grade[answer.id]=answer.grade
+            if answer.grade > highest_grade[answer.id]:
+                highest_grade[answer.id] = answer.grade
         except:
-            highest_grade[answer.id]=answer.grade
-    total_score=sum(highest_grade.values())
-    answers_submitted=len(answerlist)
+            highest_grade[answer.id] = answer.grade
+    total_score = sum(highest_grade.values())
+    answers_submitted = len(answerlist)
     # form
     form = UpdateAccountForm()
     if form.validate_on_submit():
@@ -89,9 +97,11 @@ def account(username):
         form.username.data = user.username
         form.email.data = user.email
     image_file = url_for('static', filename='profile_pics/' + user.image_file)
-    return render_template("account.html", title="Account 帳號", image_file=image_file, form=form, user=user, attempted_count=attempted_count,total_score=total_score, answers_submitted=answers_submitted)
+    return render_template("account.html", title="Account 帳號", image_file=image_file, form=form, user=user, attempted_count=attempted_count, total_score=total_score, answers_submitted=answers_submitted)
 
 # request password reset
+
+
 @users.route("/request_password", methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
@@ -105,6 +115,8 @@ def reset_request():
     return render_template("reset_request.html", title="Reset Password 重置密碼", form=form)
 
 # reset password
+
+
 @users.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
     if current_user.is_authenticated:
@@ -123,6 +135,8 @@ def reset_token(token):
     return render_template("reset_token.html", title="Reset Password 重置密碼", form=form)
 
 # list of users (admin only)
+
+
 @users.route("/user_list")
 @login_required
 def user_list():

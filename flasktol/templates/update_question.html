@@ -120,6 +120,15 @@
                     {{form.solution(class="form-control form-control-lg")}}
                 {% endif%}
             </div>
+            <div class='form-group'>
+                {{form.solution_file.label()}}
+                {{form.solution_file(class='form-control-file')}}
+                {% if form.solution_file.errors%}
+                    {% for error in form.solution_file.errors%}
+                        <span class='text-danger'>{{error}}</span></br>
+                    {% endfor %}
+                {%endif%}
+            </div> 
             <br/>
             <div class='form-group'>
                 {{form.special_characters.label(class="form-control-label")}}
